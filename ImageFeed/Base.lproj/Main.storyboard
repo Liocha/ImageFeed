@@ -28,38 +28,56 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="232"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="vjE-Y2-wNb" userLabel="Cell Image">
-                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="232"/>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="La4-Gq-Y0Y" userLabel="Like Button">
-                                                    <rect key="frame" x="324.66666666666669" y="0.0" width="68.333333333333314" height="58"/>
-                                                    <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="1"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title=" " image="FavoritesActive">
-                                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                    <buttonConfiguration key="configuration" style="plain" image="FavoritesActive" title=" ">
-                                                        <fontDescription key="titleFontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="1"/>
-                                                        <color key="baseForegroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </buttonConfiguration>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KB-Pr-82p" userLabel="Date Label">
-                                                    <rect key="frame" x="8" y="208.33333333333334" width="101.66666666666667" height="15.666666666666657"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" name="primaryText"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Swn-vi-ChV" userLabel="Container View">
+                                                    <rect key="frame" x="16" y="4" width="361" height="224"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="vjE-Y2-wNb" userLabel="Cell Image">
+                                                            <rect key="frame" x="0.0" y="0.0" width="361" height="224"/>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="La4-Gq-Y0Y" userLabel="Like Button">
+                                                            <rect key="frame" x="292.66666666666669" y="0.0" width="68.333333333333314" height="58"/>
+                                                            <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="1"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" title=" " image="FavoritesActive">
+                                                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </state>
+                                                            <buttonConfiguration key="configuration" style="plain" image="FavoritesActive" title=" ">
+                                                                <fontDescription key="titleFontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="1"/>
+                                                                <color key="baseForegroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </buttonConfiguration>
+                                                        </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KB-Pr-82p" userLabel="Date Label">
+                                                            <rect key="frame" x="8" y="200.33333333333334" width="101.66666666666667" height="15.666666666666657"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" name="primaryText"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="vjE-Y2-wNb" firstAttribute="top" secondItem="Swn-vi-ChV" secondAttribute="top" id="BLt-eU-sgb"/>
+                                                        <constraint firstAttribute="bottom" secondItem="vjE-Y2-wNb" secondAttribute="bottom" id="EDm-hW-tM1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="La4-Gq-Y0Y" secondAttribute="trailing" id="FdI-Ea-ETj"/>
+                                                        <constraint firstAttribute="trailing" secondItem="vjE-Y2-wNb" secondAttribute="trailing" id="H4U-0p-EAi"/>
+                                                        <constraint firstItem="vjE-Y2-wNb" firstAttribute="leading" secondItem="Swn-vi-ChV" secondAttribute="leading" id="JjC-5b-N3L"/>
+                                                        <constraint firstAttribute="bottom" secondItem="4KB-Pr-82p" secondAttribute="bottom" constant="8" id="QSu-hF-vdQ"/>
+                                                        <constraint firstItem="La4-Gq-Y0Y" firstAttribute="top" secondItem="Swn-vi-ChV" secondAttribute="top" id="UDD-bx-hS4"/>
+                                                        <constraint firstItem="4KB-Pr-82p" firstAttribute="leading" secondItem="Swn-vi-ChV" secondAttribute="leading" constant="8" id="WUC-pI-pbe"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" name="primaryBackground"/>
                                             <constraints>
-                                                <constraint firstItem="vjE-Y2-wNb" firstAttribute="leading" secondItem="QXR-dA-ub4" secondAttribute="leading" id="DFZ-yP-TOK"/>
-                                                <constraint firstItem="4KB-Pr-82p" firstAttribute="leading" secondItem="vjE-Y2-wNb" secondAttribute="leading" constant="8" id="JXn-YR-QQt"/>
-                                                <constraint firstAttribute="trailing" secondItem="La4-Gq-Y0Y" secondAttribute="trailing" id="Jpp-xP-dB7"/>
-                                                <constraint firstAttribute="bottom" secondItem="vjE-Y2-wNb" secondAttribute="bottom" id="MjW-I2-lBt"/>
-                                                <constraint firstAttribute="trailing" secondItem="vjE-Y2-wNb" secondAttribute="trailing" id="QlR-Ut-RsZ"/>
-                                                <constraint firstItem="vjE-Y2-wNb" firstAttribute="top" secondItem="QXR-dA-ub4" secondAttribute="top" id="SWj-xV-cyR"/>
-                                                <constraint firstItem="La4-Gq-Y0Y" firstAttribute="top" secondItem="QXR-dA-ub4" secondAttribute="top" id="eJK-hP-s4d"/>
-                                                <constraint firstItem="vjE-Y2-wNb" firstAttribute="bottom" secondItem="4KB-Pr-82p" secondAttribute="bottom" constant="8" id="tfU-bi-DSS"/>
+                                                <constraint firstItem="Swn-vi-ChV" firstAttribute="top" secondItem="QXR-dA-ub4" secondAttribute="top" constant="4" id="2eM-Lh-Bl4"/>
+                                                <constraint firstAttribute="bottom" secondItem="Swn-vi-ChV" secondAttribute="bottom" constant="4" id="GeP-Ua-UL0"/>
+                                                <constraint firstAttribute="trailing" secondItem="Swn-vi-ChV" secondAttribute="trailing" constant="16" id="PrH-xU-5I1"/>
+                                                <constraint firstItem="Swn-vi-ChV" firstAttribute="leading" secondItem="QXR-dA-ub4" secondAttribute="leading" constant="16" id="cMg-MN-K4C"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -69,6 +87,11 @@
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="vjE-Y2-wNb" id="Jf4-Pf-HpR"/>
+                                            <outlet property="dateLabel" destination="4KB-Pr-82p" id="xUz-YS-0lx"/>
+                                            <outlet property="likeButton" destination="La4-Gq-Y0Y" id="Uzc-f8-NyR"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
