@@ -1,6 +1,6 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel!
     private var usernameLabel: UILabel!
     private var helloWorldLabel: UILabel!
@@ -37,7 +37,7 @@ class ProfileViewController: UIViewController {
     private func setupNameLabel() {
         nameLabel = UILabel()
         nameLabel.text = "Екатерина Новикова"
-        nameLabel.textColor = .primaryText
+        nameLabel.textColor = .ypWhite
         nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
@@ -51,7 +51,7 @@ class ProfileViewController: UIViewController {
     private func setupUsernameLabel() {
         usernameLabel = UILabel()
         usernameLabel.text = "@ekaterina_nov"
-        usernameLabel.textColor = .primaryText
+        usernameLabel.textColor = .ypGrey
         usernameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usernameLabel)
@@ -65,7 +65,7 @@ class ProfileViewController: UIViewController {
     private func setupHelloWorldLabel() {
         helloWorldLabel = UILabel()
         helloWorldLabel.text = "Hello, world!"
-        helloWorldLabel.textColor = .primaryText
+        helloWorldLabel.textColor = .ypWhite
         
         helloWorldLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         
@@ -84,7 +84,7 @@ class ProfileViewController: UIViewController {
             target: self,
             action: #selector(didTapButton)
         )
-        actionButton.tintColor = .red
+        actionButton.tintColor = .ypRed
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(actionButton)
         
@@ -95,6 +95,6 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
-        // Обработка нажатия кнопки
+        // TODO: Добавить обработку нажатия кнопки
     }
 }

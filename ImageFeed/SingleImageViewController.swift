@@ -1,6 +1,6 @@
 import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -17,19 +17,7 @@ class SingleImageViewController: UIViewController {
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var backBtn: UIButton!
     
-    private func setupShareButton() {
-        
-        shareBtn.layer.cornerRadius = shareBtn.frame.width / 2
-        shareBtn.clipsToBounds = true
-        
-        shareBtn.tintColor = .white
-        shareBtn.setTitle("", for: .normal)
-    }
     
-    private func setupBackButton() {
-        backBtn.tintColor = .white
-        backBtn.setTitle("", for: .normal)
-    }
     
     @IBAction func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -57,6 +45,20 @@ class SingleImageViewController: UIViewController {
         rescaleAndCenterImageInScrollView(image: image)
         setupShareButton()
         setupBackButton()
+    }
+    
+    private func setupShareButton() {
+        
+        shareBtn.layer.cornerRadius = shareBtn.frame.width / 2
+        shareBtn.clipsToBounds = true
+        
+        shareBtn.tintColor = .white
+        shareBtn.setTitle("", for: .normal)
+    }
+    
+    private func setupBackButton() {
+        backBtn.tintColor = .white
+        backBtn.setTitle("", for: .normal)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
