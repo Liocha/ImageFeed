@@ -55,7 +55,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
     ) {
-        oauth2Service.fetchOAuthToken(code) { result in
+        oauth2Service.fetchAuthToken(code) { result in
             switch result {
             case .success(let token):
                 let storage = OAuth2TokenStorage()
