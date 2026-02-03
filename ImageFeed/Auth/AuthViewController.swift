@@ -4,12 +4,12 @@ protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
 }
 
-class AuthViewController: UIViewController {
+final class AuthViewController: UIViewController {
+
+    weak var delegate: AuthViewControllerDelegate?
 
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
-
-    weak var delegate: AuthViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,20 +17,24 @@ class AuthViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination
-                    as? WebViewViewController
-            else {
-                assertionFailure(
-                    "Failed to prepare for \(showWebViewSegueIdentifier)"
-                )
-                return
-            }
-            webViewViewController.delegate = self
-        } else {
+
+        guard segue.identifier == showWebViewSegueIdentifier else {
             super.prepare(for: segue, sender: sender)
+            return
         }
+
+        guard
+            let webViewViewController = segue.destination
+                as? WebViewViewController
+        else {
+            assertionFailure(
+                "Failed to prepare for \(showWebViewSegueIdentifier)"
+            )
+            return
+        }
+
+        webViewViewController.delegate = self
+
     }
 
     private func configureBackButton() {

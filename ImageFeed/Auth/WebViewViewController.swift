@@ -4,6 +4,8 @@ import WebKit
 enum WebViewConstants {
     static let unsplashAuthorizeURLString =
         "https://unsplash.com/oauth/authorize"
+    static let redirectPath = "/oauth/authorize/native"
+    static let authCodeQueryItemName = "code"
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -15,18 +17,15 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController {
-    @IBOutlet private var webView: WKWebView!
-    @IBOutlet private var progressView: UIProgressView!
+    @IBOutlet weak private var webView: WKWebView!
+    @IBOutlet weak private var progressView: UIProgressView!
 
     weak var delegate: WebViewViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         webView.navigationDelegate = self
-
         loadAuthView()
-
         updateProgress()
     }
 
@@ -36,7 +35,9 @@ final class WebViewViewController: UIViewController {
                 string: WebViewConstants.unsplashAuthorizeURLString
             )
         else {
-            print("Failed to create URLComponents from: \(WebViewConstants.unsplashAuthorizeURLString)")
+            print(
+                "Failed to create URLComponents from: \(WebViewConstants.unsplashAuthorizeURLString)"
+            )
             return
         }
 
@@ -123,9 +124,11 @@ extension WebViewViewController: WKNavigationDelegate {
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
+            urlComponents.path == WebViewConstants.redirectPath,
             let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
+            let codeItem = items.first(where: {
+                $0.name == WebViewConstants.authCodeQueryItemName
+            })
         {
             return codeItem.value
         } else {
