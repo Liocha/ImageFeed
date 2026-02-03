@@ -36,6 +36,7 @@ final class WebViewViewController: UIViewController {
                 string: WebViewConstants.unsplashAuthorizeURLString
             )
         else {
+            print("Failed to create URLComponents from: \(WebViewConstants.unsplashAuthorizeURLString)")
             return
         }
 
@@ -47,6 +48,7 @@ final class WebViewViewController: UIViewController {
         ]
 
         guard let url = urlComponents.url else {
+            print("Failed to create URL from URLComponents: \(urlComponents)")
             return
         }
 
