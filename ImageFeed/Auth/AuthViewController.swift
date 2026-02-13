@@ -1,3 +1,4 @@
+import ProgressHUD
 import UIKit
 
 protocol AuthViewControllerDelegate: AnyObject {
@@ -59,20 +60,47 @@ extension AuthViewController: WebViewViewControllerDelegate {
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
     ) {
+
+        // Скрываем WebViewViewController
+        vc.dismiss(animated: true)
+
+        // Показываем индикатор загрузки
+        UIBlockingProgressHUD.show()
+
         oauth2Service.fetchAuthToken(code) { result in
+
+            // Скрываем индикатор загрузки
+            UIBlockingProgressHUD.dismiss()
+
             switch result {
             case .success(let token):
-                let storage = OAuth2TokenStorage()
+                let storage = OAuth2TokenStorage.shared
                 storage.token = token
                 self.delegate?.didAuthenticate(self)
 
             case .failure(let error):
                 print("OAuth error:", error)
+                DispatchQueue.main.async {
+                    self.showAuthErrorAlert()
+                }
             }
         }
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
+    }
+}
+
+extension AuthViewController {
+    func showAuthErrorAlert() {
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
 }
