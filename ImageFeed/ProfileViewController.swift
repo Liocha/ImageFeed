@@ -1,18 +1,46 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+
     private let nameLabel = UILabel()
     private let usernameLabel = UILabel()
     private let helloWorldLabel = UILabel()
     private let profileImageView = UIImageView()
     private let actionButton = UIButton()
 
+    private var profileImageServiceObserver: NSObjectProtocol?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.updateAvatar()
+            }
+
+        updateAvatar()
     }
 
+    deinit {
+        if let observer = profileImageServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
+    // MARK: - UI Setup
+
     private func setupUI() {
+        view.backgroundColor = .ypBlack
         setupProfileImage()
         setupNameLabel()
         setupUsernameLabel()
@@ -22,7 +50,9 @@ final class ProfileViewController: UIViewController {
 
     private func setupProfileImage() {
         profileImageView.image = UIImage(named: "profileImage")
-        profileImageView.tintColor = .gray
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 35
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(profileImageView)
 
@@ -41,7 +71,6 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupNameLabel() {
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = .ypWhite
         nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -59,9 +88,8 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupUsernameLabel() {
-        usernameLabel.text = "@ekaterina_nov"
         usernameLabel.textColor = .ypGrey
-        usernameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        usernameLabel.font = UIFont.systemFont(ofSize: 13)
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(usernameLabel)
 
@@ -77,11 +105,8 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupHelloWorldLabel() {
-        helloWorldLabel.text = "Hello, world!"
         helloWorldLabel.textColor = .ypWhite
-
-        helloWorldLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-
+        helloWorldLabel.font = UIFont.systemFont(ofSize: 13)
         helloWorldLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(helloWorldLabel)
 
@@ -97,10 +122,12 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupActionButton() {
-
         if let image = UIImage(systemName: "ipad.and.arrow.forward") {
             actionButton.setImage(image, for: .normal)
         }
+
+        actionButton.tintColor = .ypRed
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
 
         actionButton.addTarget(
             self,
@@ -108,8 +135,6 @@ final class ProfileViewController: UIViewController {
             for: .touchUpInside
         )
 
-        actionButton.tintColor = .ypRed
-        actionButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(actionButton)
 
         NSLayoutConstraint.activate([
@@ -123,7 +148,44 @@ final class ProfileViewController: UIViewController {
         ])
     }
 
+    // MARK: - Actions
+
     @objc private func didTapButton() {
-        // TODO: Добавить обработку нажатия кнопки
+        // logout будет позже
+    }
+
+    // MARK: - Data Update
+
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text =
+            profile.name.isEmpty
+            ? "Имя не указано"
+            : profile.name
+
+        usernameLabel.text =
+            profile.loginName.isEmpty
+            ? "@неизвестный_пользователь"
+            : profile.loginName
+
+        helloWorldLabel.text =
+            (profile.bio?.isEmpty ?? true)
+            ? "Профиль не заполнен"
+            : profile.bio
+    }
+
+    private func updateAvatar() {
+        guard
+            let avatarString = ProfileImageService.shared.avatarURL,
+            let url = URL(string: avatarString)
+        else { return }
+        
+        profileImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "profileImage"),
+            options: [
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ]
+        )
     }
 }
