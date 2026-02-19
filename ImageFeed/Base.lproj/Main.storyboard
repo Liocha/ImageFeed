@@ -67,6 +67,9 @@
                                                                 <fontDescription key="titleFontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="1"/>
                                                                 <color key="baseForegroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="likeButtonClicked:" destination="qJM-7l-vFK" eventType="touchUpInside" id="t3b-Z9-0V8"/>
+                                                            </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4KB-Pr-82p" userLabel="Date Label">
                                                             <rect key="frame" x="8" y="200.33333333333334" width="101.66666666666667" height="15.666666666666657"/>
@@ -174,15 +177,16 @@
                                     <action selector="didTapBackButton:" destination="cNx-MI-8yt" eventType="touchUpInside" id="TZh-wf-HBt"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h57-Za-cnZ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h57-Za-cnZ">
                                 <rect key="frame" x="171.66666666666666" y="751" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="yeS-P9-RBS"/>
                                     <constraint firstAttribute="width" constant="50" id="zL1-G9-pcA"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" image="share_btn">
-                                    <color key="baseBackgroundColor" name="primaryBackground"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="" image="share_btn"/>
+                                <buttonConfiguration key="configuration" style="filled" image="share_btn" title="">
+                                    <color key="baseBackgroundColor" name="ypBlack"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="didTapShareButton:" destination="cNx-MI-8yt" eventType="touchUpInside" id="fSm-al-VrG"/>

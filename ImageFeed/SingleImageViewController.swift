@@ -17,6 +17,7 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var backBtn: UIButton!
     
+    var imageURL: String?
     
     
     @IBAction func didTapBackButton(_ sender: Any) {
@@ -26,9 +27,10 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBAction func didTapShareButton(_ sender: Any) {
-        guard let image else { return }
+        print("sharte click!!!!!")
+        guard let imageURL else { return }
         let share = UIActivityViewController(
-            activityItems: [image],
+            activityItems: [imageURL],
             applicationActivities: nil
         )
         present(share, animated: true, completion: nil)
@@ -36,24 +38,47 @@ final class SingleImageViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
         setupShareButton()
         setupBackButton()
+        
+        guard let imageURLString = imageURL, let fullImageURL = URL(string: imageURLString) else {
+            if let image {
+                imageView.image = image
+                imageView.frame.size = image.size
+                rescaleAndCenterImageInScrollView(image: image)
+            }
+            return
+        }
+        
+        // Показываем блокирующий индикатор
+        UIBlockingProgressHUD.show()
+        
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.imageView.image = imageResult.image
+                self.imageView.frame.size = imageResult.image.size
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
     }
     
     private func setupShareButton() {
-        
         shareBtn.layer.cornerRadius = shareBtn.frame.width / 2
         shareBtn.clipsToBounds = true
         
         shareBtn.tintColor = .white
         shareBtn.setTitle("", for: .normal)
+        shareBtn.setTitle(nil, for: .normal)
+
     }
     
     private func setupBackButton() {
@@ -76,6 +101,16 @@ final class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Не удалось загрузить картинку",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Ок", style: .default))
+        present(alert, animated: true)
     }
 }
 
