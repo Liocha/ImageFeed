@@ -1,7 +1,22 @@
-import UIKit
 import Kingfisher
+import UIKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+
+    func updateProfile(name: String, username: String, bio: String)
+    func updateAvatar(url: URL?)
+    func showLogoutConfirmation()
+    func switchToSplash()
+}
+
+final class ProfileViewController: UIViewController &
+    ProfileViewControllerProtocol
+{
+
+    var presenter: ProfileViewPresenterProtocol?
+
+    // MARK: - UI
 
     private let nameLabel = UILabel()
     private let usernameLabel = UILabel()
@@ -9,32 +24,17 @@ final class ProfileViewController: UIViewController {
     private let profileImageView = UIImageView()
     private let actionButton = UIButton()
 
-    private var profileImageServiceObserver: NSObjectProtocol?
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
-
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                self?.updateAvatar()
-            }
-
-        updateAvatar()
+        presenter?.viewDidLoad()
     }
-
-    deinit {
-        if let observer = profileImageServiceObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
+    
+    func configure(with presenter: ProfileViewPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
     }
 
     // MARK: - UI Setup
@@ -128,7 +128,7 @@ final class ProfileViewController: UIViewController {
 
         actionButton.tintColor = .ypRed
         actionButton.translatesAutoresizingMaskIntoConstraints = false
-
+        actionButton.accessibilityIdentifier = "logout button"
         actionButton.addTarget(
             self,
             action: #selector(didTapButton),
@@ -151,6 +151,27 @@ final class ProfileViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didTapButton() {
+        presenter?.didTapLogout()
+    }
+
+    // MARK: - ProfileViewControllerProtocol
+
+    func updateProfile(name: String, username: String, bio: String) {
+        nameLabel.text = name
+        usernameLabel.text = username
+        helloWorldLabel.text = bio
+    }
+
+    func updateAvatar(url: URL?) {
+        guard let url else { return }
+
+        profileImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "profileImage")
+        )
+    }
+
+    func showLogoutConfirmation() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Вы уверены, что хотите выйти?",
@@ -158,57 +179,18 @@ final class ProfileViewController: UIViewController {
         )
 
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Выйти", style: .destructive) { [weak self] _ in
-            self?.logout()
-        })
+        alert.addAction(
+            UIAlertAction(title: "Выйти", style: .destructive) {
+                [weak self] _ in
+                self?.presenter?.didConfirmLogout()
+            }
+        )
 
         present(alert, animated: true)
     }
-    
-    private func logout() {
-        ProfileLogoutService.shared.logout()
 
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
-            return
-        }
-
-        let splashVC = SplashViewController()
-        window.rootViewController = splashVC
-    }
-
-    // MARK: - Data Update
-
-    private func updateProfileDetails(profile: Profile) {
-        nameLabel.text =
-            profile.name.isEmpty
-            ? "Имя не указано"
-            : profile.name
-
-        usernameLabel.text =
-            profile.loginName.isEmpty
-            ? "@неизвестный_пользователь"
-            : profile.loginName
-
-        helloWorldLabel.text =
-            (profile.bio?.isEmpty ?? true)
-            ? "Профиль не заполнен"
-            : profile.bio
-    }
-
-    private func updateAvatar() {
-        guard
-            let avatarString = ProfileImageService.shared.avatarURL,
-            let url = URL(string: avatarString)
-        else { return }
-        
-        profileImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "profileImage"),
-            options: [
-                .transition(.fade(0.2)),
-                .cacheOriginalImage
-            ]
-        )
+    func switchToSplash() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        window.rootViewController = SplashViewController()
     }
 }

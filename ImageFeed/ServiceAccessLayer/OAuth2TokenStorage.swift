@@ -5,7 +5,7 @@ final class OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
     private init() {}
 
-    private let tokenKey = "token2"
+    private let tokenKey = "token3"
 
     var token: String? {
         get {

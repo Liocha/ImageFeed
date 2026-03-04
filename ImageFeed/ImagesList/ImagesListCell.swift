@@ -16,6 +16,8 @@ final class ImagesListCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        likeButton.accessibilityIdentifier = "likeButton"
+        likeButton.accessibilityLabel = "likeButton"
 
         cellImage.kf.cancelDownloadTask()
         cellImage.image = nil
