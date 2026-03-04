@@ -27,7 +27,6 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBAction func didTapShareButton(_ sender: Any) {
-        print("sharte click!!!!!")
         guard let imageURL else { return }
         let share = UIActivityViewController(
             activityItems: [imageURL],
